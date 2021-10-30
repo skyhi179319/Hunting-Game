@@ -13,7 +13,7 @@ class inventory:
     store_items = {
         "Knife": 10,
         "Pistol": 2,
-        "Riffle": 3
+        "Rifle": 3
     }
     Store = True
     def stats():
@@ -117,16 +117,16 @@ class inventory:
                 inventory.store()
         if inventory.store_items.get("Pistol") <= 0:
            sys.exit()
-    def generate_Riffle_price():
+    def generate_Rifle_price():
         import random
         import sys
-        if inventory.store_items.get("Riffle") >= 1:
+        if inventory.store_items.get("Rifle") >= 1:
             generate_gold_ammount = [5,10,15,20,25,30]
             generate_ammount = random.choice(generate_gold_ammount)
             if inventory.user.get("Gold") >= generate_ammount:
-                print("You Have Bought A Hunting Riffle")
-                inventory.user["Riffle"] = 0
-                inventory.user["Riflle"] = 1 + inventory.user.get("Riffle")
+                print("You Have Bought A Hunting Rifrle")
+                inventory.user["Rifle"] = 0
+                inventory.user["Rifle"] = 1 + inventory.user.get("Rifle")
                 inventory.user["Gold"] = inventory.user.get("Gold") - generate_ammount
             elif inventory.user.get("Gold") <= generate_ammount:
                 print("You Do Not Have Enough Money To Buy This")
@@ -135,15 +135,15 @@ class inventory:
            sys.exit()
     def store():
         print("You Are At The Hunting Store And You Must Buy An Item")
-        pick_item = input("Knife,Pistol,Riffle\n")
+        pick_item = input("Knife,Pistol,Rifle\n")
         if pick_item == "Knife":
             inventory.generate_knife_price()
             inventory.Store = False
         if pick_item == "Pistol":
             inventory.generate_Pistol_price()
             inventory.Store = False
-        if pick_item == "Riffle":
-            inventory.generate_Riffle_price()
+        if pick_item == "Rifle":
+            inventory.generate_Rifle_price()
             inventory.Store = False
     def hunting():
         import random
@@ -165,7 +165,7 @@ class inventory:
             if deer_attack == "Fail":
                 print("You Didn't Kill The Deer")
                 inventory.user["Deer"] = 0 + inventory.user["Deer"]
-        if "Riffle" in inventory.user:
+        if "Rifle" in inventory.user:
             deer_attack_chance = ["Success","Success","Success","Fail"]
             deer_attack = random.choice(deer_attack_chance)
             if deer_attack == "Success":

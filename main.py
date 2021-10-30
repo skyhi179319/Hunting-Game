@@ -1,4 +1,3 @@
-from tkinter import *
 class inventory:
     user = {
         "HP": 90,
@@ -8,7 +7,7 @@ class inventory:
         "Silver": 0,
         "Dollars": 0,
         "Deer": 0,
-        "Meat": 0
+        "Meat": 0,
     }
     store_items = {
         "Knife": 10,
@@ -16,41 +15,6 @@ class inventory:
         "Rifle": 3
     }
     Store = True
-    def stats():
-        root = Tk()
-        root.title('Stats')
-        HP = Text(root, height=2, width=20, bg='greenyellow', fg='darkgoldenrod')
-        EXP = Text(root, height=2, width=20, bg='greenyellow', fg='darkgoldenrod')
-        Keys = Text(root, height=2, width=20, bg='lightblue', fg='darkgoldenrod')
-        Gold = Text(root, height=2, width=20, bg='lightblue', fg='darkgoldenrod')
-        Silver = Text(root, height=2, width=20, bg='lightblue', fg='darkgoldenrod')
-        Dollars = Text(root, height=2, width=20, bg='lightblue', fg='darkgoldenrod')
-        Deer = Text(root, height=2, width=20, bg='gray', fg='gold')
-        Meat = Text(root, height=2, width=20, bg='gray', fg='gold')
-        HP.pack()
-        EXP.pack()
-        Keys.pack()
-        Gold.pack()
-        Silver.pack()
-        Dollars.pack()
-        Deer.pack()
-        Meat.pack()
-        Players_HP = "HP:" + str(inventory.user.get("HP"))
-        Players_EXP = "EXP:" + str(inventory.user.get("EXP"))
-        Players_Keys = "Keys:" + str(inventory.user.get("Keys"))
-        Players_Gold = "Gold:" + str(inventory.user.get("Gold"))
-        Players_Silver = "Silver:" + str(inventory.user.get("Silver"))
-        Players_Dollars = "$" + str(inventory.user.get("Dollars"))
-        Players_Deer = "Deer:" + str(inventory.user.get("Deer"))
-        Players_Meat = "Meat:" + str(inventory.user.get("Meat"))
-        HP.insert(END, Players_HP)
-        EXP.insert(END, Players_EXP)
-        Keys.insert(END, Players_Keys)
-        Gold.insert(END, Players_Gold)
-        Silver.insert(END, Players_Silver)
-        Dollars.insert(END, Players_Dollars)
-        Deer.insert(END, Players_Deer)
-        Meat.insert(END, Players_Meat)
     def add_keys(Keys,Gold):
         inventory.user["Keys"] = Keys + inventory.user.get("Keys")
         inventory.user["Gold"] = Gold + inventory.user.get("Gold")
@@ -85,6 +49,11 @@ class inventory:
         dollars_amount = [100,200,300,400,500]
         dollars = random.choice(dollars_amount)
         inventory.add_silver(silver,dollars)
+    def convert_money(price):
+        silver_count = 0
+        while inventory.user.get("Dollars") - price >= price:
+            silver_count = silver_count + 1
+        inventory.user["Silver"] = inventory.user.get("Silver") + silver_count
     def generate_knife_price():
         import random
         import sys
@@ -93,12 +62,12 @@ class inventory:
             generate_ammount = random.choice(generate_dollar_ammount)
             if inventory.user.get("Dollars") >= generate_ammount:
                 print("You Have Bought A Hunting Knife")
-                inventory.user["Knife"] = 0
-                inventory.user["Knife"] = 1 + inventory.user.get("Knife")
+                inventory.user["Knife"] = 1
+                #inventory.user["Knife"] = 1 + inventory.user.get("Knife")
                 inventory.user["Dollars"] = inventory.user.get("Dollars") - generate_ammount
             elif inventory.user.get("Dollars") <= generate_ammount:
                 print("You Do Not Have Enough Money To Buy This")
-                inventory.store()
+                inventory.store("Start")
         if inventory.store_items.get("Knife") <= 0:
            sys.exit()
     def generate_Pistol_price():
@@ -109,12 +78,12 @@ class inventory:
             generate_ammount = random.choice(generate_silver_ammount)
             if inventory.user.get("Silver") >= generate_ammount:
                 print("You Have Bought A Hunting Pistol")
-                inventory.user["Pistol"] = 0
-                inventory.user["Pistol"] = 1 + inventory.user.get("Pistol")
+                inventory.user["Pistol"] = 1
+                #inventory.user["Pistol"] = 1 + inventory.user.get("Pistol")
                 inventory.user["Silver"] = inventory.user.get("Silver") - generate_ammount
             elif inventory.user.get("Silver") <= generate_ammount:
                 print("You Do Not Have Enough Money To Buy This")
-                inventory.store()
+                inventory.store("Start")
         if inventory.store_items.get("Pistol") <= 0:
            sys.exit()
     def generate_Rifle_price():
@@ -125,26 +94,27 @@ class inventory:
             generate_ammount = random.choice(generate_gold_ammount)
             if inventory.user.get("Gold") >= generate_ammount:
                 print("You Have Bought A Hunting Rifrle")
-                inventory.user["Rifle"] = 0
-                inventory.user["Rifle"] = 1 + inventory.user.get("Rifle")
+                inventory.user["Rifle"] = 1
+                #inventory.user["Rifle"] = 1 + inventory.user.get("Rifle")
                 inventory.user["Gold"] = inventory.user.get("Gold") - generate_ammount
             elif inventory.user.get("Gold") <= generate_ammount:
                 print("You Do Not Have Enough Money To Buy This")
-                inventory.store()
+                inventory.store("Start")
         if inventory.store_items.get("Pistol") <= 0:
            sys.exit()
-    def store():
-        print("You Are At The Hunting Store And You Must Buy An Item")
-        pick_item = input("Knife,Pistol,Rifle\n")
-        if pick_item == "Knife":
-            inventory.generate_knife_price()
-            inventory.Store = False
-        if pick_item == "Pistol":
-            inventory.generate_Pistol_price()
-            inventory.Store = False
-        if pick_item == "Rifle":
-            inventory.generate_Rifle_price()
-            inventory.Store = False
+    def store(gamePos):
+        if(gamePos == "Start"):
+            print("You Are At The Hunting Store And You Must Buy An Item")
+            pick_item = input("Knife,Pistol,Rifle\n")
+            if pick_item == "Knife":
+                inventory.generate_knife_price()
+                inventory.Store = False
+            if pick_item == "Pistol":
+                inventory.generate_Pistol_price()
+                inventory.Store = False
+            if pick_item == "Rifle":
+                inventory.generate_Rifle_price()
+                inventory.Store = False
     def hunting():
         import random
         if "Knife" in inventory.user:
@@ -203,43 +173,32 @@ class inventory:
         f.writelines("\n")
         f.writelines(str(inventory.user.get("Meat")))
         f.close()
-        inventory.stats()
     def start():
         import sys
         inventory.get_stuff_on_load()
-        print("You Are Going To Pick Up Keys And Gold")
+        print("You Are Going To Pick Up Items")
+        ready = True
+        if ready == True:
+            inventory.game_gold_and_silver()
+            inventory.game_silver_and_dollar()
+            ready = False
         ready = True
         while ready == True:
-            inventory.game_keys_and_gold()
             print(inventory.user)
             ready = False
             if ready == False:
-                print("You Are Going To Pick Up Gold And Silver")
-                ready = True
-                while ready == True:
-                    inventory.game_gold_and_silver()
-                    print(inventory.user)
-                    ready = False
-                    if ready == False:
-                        print("You Are Going To Pick Up Silver And Dollars")
-                        ready = True
-                        while ready == True:
-                            inventory.game_silver_and_dollar()
+                while inventory.Store == True:
+                    # starts store
+                    inventory.store("Start")
+                    if inventory.Store == False:
+                        hunt = input("Do You Want To Hunt?\n")
+                        while hunt == "Yes":
+                            inventory.hunting()
+                            hunt = input("Do You Want To Hunt?\n")
+                        else:
+                            inventory.cooking(inventory.user.get("Deer"),2,inventory.user.get("HP"),inventory.user.get("EXP"))
                             print(inventory.user)
-                            ready = False
-                            if ready == False:
-                                while inventory.Store == True:
-                                    inventory.store()
-                                    if inventory.Store == False:
-                                        hunt = input("Do You Want To Hunt?\n")
-                                        while hunt == "Yes":
-                                            inventory.hunting()
-                                            hunt = input("Do You Want To Hunt?\n")
-                                            inventory.stats()
-                                            if hunt == "No":
-                                                inventory.cooking(inventory.user.get("Deer"),2,inventory.user.get("HP"),inventory.user.get("EXP"))
-                                                print(inventory.user)
-                                                inventory.sell_meat(inventory.user.get("Meat"),12.5)
-                                                print("TIP: If You Want To Keep Stats Put The Information Into A Spreadsheet")
-                                                inventory.file_exsist()
+                            inventory.sell_meat(inventory.user.get("Meat"),12.5)
+                            print("TIP: If You Want To Keep Stats Put The Information Into A Spreadsheet")
+                            inventory.file_exsist()
 inventory.start()
